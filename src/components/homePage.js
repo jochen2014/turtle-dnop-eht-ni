@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isValidCommand } from '../common/commands';
 
 const directions = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
 class HomePage extends Component {
@@ -6,6 +7,7 @@ class HomePage extends Component {
     constructor() {
         super();
         this.state = {
+            command: '',
             f: directions[0],
             x: 0,
             y: 0,
@@ -24,15 +26,16 @@ class HomePage extends Component {
     }
 
     addReport = newReport => {
-        const {reports} = this.state;
+        const { reports } = this.state;
         const newReports = [...reports].concat([newReport]).slice(-5); //we keep 5 maximum logs;
         const self = this;
-        setTimeout(function () {
+        setTimeout(function() {
             self.setState({
                 reports: newReports,
             })
         }, 500);
     }
+
     handleKeyDown = e => {
         const { x, y, f: facing } = this.state;
         const directionIndex = directions.indexOf(facing);
@@ -50,7 +53,7 @@ class HomePage extends Component {
                             return false;
                         }
                         this.setState({
-                            y:y+1,
+                            y: y + 1,
                         })
                         break;
                     case 1: //east
@@ -59,7 +62,7 @@ class HomePage extends Component {
                             return false;
                         }
                         this.setState({
-                           x:x+1,
+                            x: x + 1,
                         })
                         break;
                     case 2: //south
@@ -68,8 +71,8 @@ class HomePage extends Component {
                             return false;
                         }
                         this.setState({
-                            y:y-1,
-                         })
+                            y: y - 1,
+                        })
                         break;
                     case 3: //west
                         if (x === 0) {
@@ -77,8 +80,8 @@ class HomePage extends Component {
                             return false;
                         }
                         this.setState({
-                            x:x-1,
-                         })
+                            x: x - 1,
+                        })
                         break;
                 }
                 break;
@@ -101,6 +104,7 @@ class HomePage extends Component {
             y
         })
     }
+
     getCellClassName = (x, y) => {
         const { x: selectedX, y: selectedY, f } = this.state;
         if (x === selectedX && y === selectedY) {
@@ -109,14 +113,42 @@ class HomePage extends Component {
         return '';
     }
 
+    onCommandChanged = e => {
+        const { target: { value } } = e;
+        this.setState({
+            command: value
+        })
+
+    }
+    onCommandKeyPressed = e => {
+        if (e.key === 'Enter') {
+            this.onExecuteCommand();
+        }
+    }
+    onExecuteCommand = e => {
+        const { command } = this.state;
+        if (!command) {
+            return;
+        }
+        if (isValidCommand(command)) {
+
+        } else {
+            this.addReport(`invalid command: ${command}`);
+        }
+        this.setState({
+            command: '',
+        })
+    }
+
     render() {
+        const { command, reports } = this.state;
         return <div className="container">
             <div className="title">
                 <h1>Turtle in the Pond</h1>
             </div>
             <div className="command">
-                <input type="text" />
-                <button>Go</button>
+                <input type="text" value={command} onChange={this.onCommandChanged} onKeyPress={this.onCommandKeyPressed} />
+                <button onClick={this.onExecuteCommand}>Go</button>
             </div>
             <div className="canvas" >
                 {
@@ -135,7 +167,7 @@ class HomePage extends Component {
             </div>
             <div className="log">
                 {
-                    this.state.reports.map((r, index) => (
+                    reports.map((r, index) => (
                         <div key={`key_${index}`}>{r}</div>
                     ))
                 }
