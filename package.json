@@ -10,9 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "whatwg-fetch": "^2.0.3"
+    "express": "^4.16.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",
@@ -36,11 +34,14 @@
     "less-loader": "^4.0.5",
     "moment": "^2.18.1",
     "postcss-loader": "^2.0.6",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "rimraf": "^2.6.1",
     "style-loader": "^0.19.0",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "webpack-dev-server": "^2.9.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "jest": {
     "rootDir": "",
