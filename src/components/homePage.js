@@ -70,6 +70,7 @@ class HomePage extends Component {
                 }, ()=>{
                     console.log(` ==========  ${this.state.f}`);
                 })
+                break;
             }
             case 'LEFT':
                 this.setState({
