@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 3000 --color --progress --inline --bail",
+    "start": "node heroku.js",
     "build": "webpack --color --progress --bail",
     "clean": "rimraf dist",
     "test": "jest"
