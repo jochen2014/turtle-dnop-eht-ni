@@ -1,0 +1,77 @@
+@background-color: #fafbfc;
+@background-color-hover: #f6f8fa;
+@border-color:#e1e4e8;
+@blue: #0366d6;
+@light-grey: #e1e1e1;
+@dark-grey:#c0bebe;
+@cyan:#07dfe3;
+@dark-green:#7ba939;
+
+* {
+    box-sizing: border-box;
+}
+input{
+    display: inline-block;
+    font-size: 15px;
+    padding-left:10px;
+    height: 40px;
+    transition:all .1s ease-out
+}
+button{
+    display: inline-block;
+    font-size: 15px;
+    border: none;
+    border-radius: 2px;
+    font-weight: 400;
+    color: #fff;
+    cursor: pointer;
+    height: 40px;
+    padding:12px 20px 14px;
+}
+
+.container{
+    padding:0 20px 0 20px;
+    min-height: 450px;
+    min-width: 410px;
+    .title{
+        color: @cyan;
+    }
+    .command{
+        max-width: 418px;
+        input{
+            width:70%;
+            margin-right: 10px;
+        }
+        button{
+            width:20%;
+            background-color: @dark-green;
+        }
+    }
+    .canvas{
+        margin-top: 20px;
+        height: 415px;
+        width: 418px;
+        border: 1px solid @border-color;
+        padding:10px;
+        .row{
+            div{
+                display: inline-block;
+                width: 75px;
+                height: 75px;
+                background-color: @light-grey;
+                &:not(:last-child){
+                    margin-right: 5px;
+                }
+                &:hover{
+                    background-color: @dark-grey;
+                }
+                &.selected{
+                    background-image: url('turtle.png');
+                    background-size: 100% 100%;
+                    background-repeat: no-repeat;
+                }
+            }
+            
+        }
+    }
+}
