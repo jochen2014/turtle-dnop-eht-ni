@@ -53,6 +53,15 @@ describe('test Command Engine', () => {
         expect(cb.mock.calls[0][0]).not.toBe(currentState);
         expect(cb.mock.calls[0][0]).toEqual(currentState);
     });
+    it('should handle invalid command correctly', () => {
+        const currentState = { x: 0, y: 0, f: 'NORTH' };
+        const command = 'invalid command';
+        const cb = jest.fn();
+        executeCommand(currentState, command, cb);
+        expect(cb.mock.calls.length).toBe(1);
+        expect(cb.mock.calls[0][0]).toBe(currentState);
+        expect(cb.mock.calls[0][1]).toBe(`invalid command:${command}`);
+    });
     it('should execute place command correctly', () => {
         const currentState = { x: 1, y: 2, f: 'WEST' };
         const command1 = 'place 0,0, north';

@@ -2,32 +2,36 @@
 
 exports[`test UI Component should render home page correctly 1`] = `
 <div
-  className="container"
+  className="main"
 >
   <div
-    className="title"
+    className="header"
   >
-    <h1>
-      Turtle in the Pond
-    </h1>
-  </div>
-  <div
-    className="command"
-  >
-    <input
-      onChange={[Function]}
-      onKeyPress={[Function]}
-      type="text"
-      value=""
-    />
-    <button
-      onClick={[Function]}
+    <div
+      className="title"
     >
-      Go
-    </button>
+      <h1>
+        Turtle in the Pond
+      </h1>
+    </div>
+    <div
+      className="command"
+    >
+      <input
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        type="text"
+        value=""
+      />
+      <button
+        onClick={[Function]}
+      >
+        Go
+      </button>
+    </div>
   </div>
   <div
-    className="canvas"
+    className="content"
   >
     <div
       className="row"
@@ -199,9 +203,9 @@ exports[`test UI Component should render home page correctly 1`] = `
         onClick={[Function]}
       />
     </div>
+    <div
+      className="log"
+    />
   </div>
-  <div
-    className="log"
-  />
 </div>
 `;

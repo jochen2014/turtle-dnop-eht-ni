@@ -35,10 +35,12 @@ const parseCommand = (command) => {
 
 
 const executeCommand = (currentState, commandRaw, callback) => {
-    const { command, args } = parseCommand(commandRaw);
-    if (!command) { // invalid command;
+    const parseResult = parseCommand(commandRaw);
+    if (!parseResult) { // invalid command;
         callback(currentState, `invalid command:${commandRaw}`);
+        return;
     }
+    const { command, args } = parseResult;
     const { x, y, f } = currentState;
     const directionIndex = directions.indexOf(f);
     switch (command) {
