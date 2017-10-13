@@ -21,79 +21,80 @@ button {
   height: 40px;
   padding: 12px 20px 14px;
 }
-.container {
-  padding: 0 20px 0 20px;
-  min-height: 450px;
-  min-width: 410px;
+.main {
+  padding: 0 10px 0 10px;
+  min-width: 350px;
+  text-align: center;
 }
-.container .title {
+.main .header .title {
   color: #07dfe3;
 }
-.container .command {
-  max-width: 418px;
-}
-.container .command input {
-  width: 70%;
+.main .header .command input {
+  width: 50%;
   margin-right: 10px;
 }
-.container .command button {
+.main .header .command button {
   width: 20%;
   background-color: #7ba939;
 }
-.container .canvas {
+.main .content {
   margin-top: 20px;
-  height: 415px;
-  width: 418px;
   border: 1px solid #e1e4e8;
   padding: 10px;
+  text-align: center;
 }
-.container .canvas .row div {
+.main .content .row div {
   display: inline-block;
-  width: 75px;
-  height: 75px;
+  min-width: 50px;
+  min-height: 50px;
+  width: 5vw;
+  height: 5vw;
   background-color: #e1e1e1;
 }
-.container .canvas .row div:not(:last-child) {
+.main .content .row div:not(:last-child) {
   margin-right: 5px;
 }
-.container .canvas .row div:hover {
+.main .content .row div:hover {
   background-color: #c0bebe;
 }
-.container .canvas .row div.selected-n {
+.main .content .row div.selected-n {
   background-image: url(/afe3ef84354f5795d5dd006b98282ee5.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-.container .canvas .row div.selected-e {
+.main .content .row div.selected-e {
   background-image: url(/afe3ef84354f5795d5dd006b98282ee5.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
 }
-.container .canvas .row div.selected-s {
+.main .content .row div.selected-s {
   background-image: url(/afe3ef84354f5795d5dd006b98282ee5.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
-.container .canvas .row div.selected-w {
+.main .content .row div.selected-w {
   background-image: url(/afe3ef84354f5795d5dd006b98282ee5.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   -webkit-transform: rotate(270deg);
           transform: rotate(270deg);
 }
-.container .log {
-  width: 418px;
-  text-align: center;
+.main .content .log {
   font-size: 20px;
   padding: 20px;
 }
-.container .log div {
+.main .content .log div {
   opacity: 1;
   -webkit-transition: opacity 2s ease-in-out;
   transition: opacity 2s ease-in-out;
   margin-bottom: 5px;
+}
+@media (min-width: 600px) {
+  .main {
+    padding: 0 20% 0 20%;
+  }
 }
