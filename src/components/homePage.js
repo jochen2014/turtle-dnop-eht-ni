@@ -4,19 +4,18 @@ import { parseCommand } from '../common/commands';
 const directions = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
 const keyMap = [{
     key: 'ArrowLeft',
-    command: 'LEFT'
+    command: 'LEFT',
 }, {
     key: 'ArrowUp',
-    command: 'MOVE'
+    command: 'MOVE',
 }, {
     key: 'ArrowRight',
-    command: 'RIGHT'
+    command: 'RIGHT',
 }, {
     key: 'ArrowDown',
-    command: 'REPORT'
-}]
+    command: 'REPORT',
+}];
 class HomePage extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -25,7 +24,7 @@ class HomePage extends Component {
             x: 0,
             y: 0,
             reports: [],
-        }
+        };
     }
 
     componentWillMount() {
@@ -38,19 +37,19 @@ class HomePage extends Component {
         document.removeEventListener("keydown", this.handleKeyDown);
     }
 
-    addReport = newReport => {
+    addReport = (newReport) => {
         const { reports } = this.state;
-        const newReports = [...reports].concat([newReport]).slice(-5); //we keep 5 maximum logs;
+        const newReports = [...reports].concat([newReport]).slice(-5); // we keep 5 maximum logs;
         const self = this;
-        setTimeout(function() {
+        setTimeout(() => {
             self.setState({
                 reports: newReports,
-            })
+            });
         }, 500);
     }
 
     executeCommand = (_command, args) => {
-        //place 0, 0, north
+        // place 0, 0, north
         console.log(`---------  executing command ${_command} with args ${args}`);
         const command = _command.toUpperCase();
         const { x, y, f: facing } = this.state;
@@ -67,59 +66,59 @@ class HomePage extends Component {
                     x: Number(x),
                     y: Number(y),
                     f: f.toUpperCase(),
-                }, ()=>{
+                }, () => {
                     console.log(` ==========  ${this.state.f}`);
-                })
+                });
                 break;
             }
             case 'LEFT':
                 this.setState({
-                    f: directions[(directionIndex + 3) % 4]
+                    f: directions[(directionIndex + 3) % 4],
                 });
                 break;
             case 'MOVE':
                 switch (directionIndex) {
-                    case 0: //north
+                    case 0: // north
                         if (y === 4) {
-                            this.addReport('cannot go north')
+                            this.addReport('cannot go north');
                             return false;
                         }
                         this.setState({
                             y: y + 1,
-                        })
+                        });
                         break;
-                    case 1: //east
+                    case 1: // east
                         if (x === 4) {
-                            this.addReport('cannot go east')
+                            this.addReport('cannot go east');
                             return false;
                         }
                         this.setState({
                             x: x + 1,
-                        })
+                        });
                         break;
-                    case 2: //south
+                    case 2: // south
                         if (y === 0) {
-                            this.addReport('cannot go south')
+                            this.addReport('cannot go south');
                             return false;
                         }
                         this.setState({
                             y: y - 1,
-                        })
+                        });
                         break;
-                    case 3: //west
+                    case 3: // west
                         if (x === 0) {
-                            this.addReport('cannot go west')
+                            this.addReport('cannot go west');
                             return false;
                         }
                         this.setState({
                             x: x - 1,
-                        })
+                        });
                         break;
                 }
                 break;
             case 'RIGHT':
                 this.setState({
-                    f: directions[(directionIndex + 1) % 4]
+                    f: directions[(directionIndex + 1) % 4],
                 });
                 break;
             case 'REPORT':
@@ -130,62 +129,59 @@ class HomePage extends Component {
         }
     }
 
-    handleKeyDown = e => {
+    handleKeyDown = (e) => {
         const result = keyMap.find(m => m.key === e.key);
         if (result) {
             this.executeCommand(result.command);
         }
-
     }
 
-    onCellClicked = (x, y) => e => {
+    onCellClicked = (x, y) => (e) => {
         this.setState({
             x,
-            y
-        })
+            y,
+        });
     }
 
     getCellClassName = (x, y) => {
         const { x: selectedX, y: selectedY, f } = this.state;
         if (x === selectedX && y === selectedY) {
-            return 'selected-' + f.toLowerCase()[0];
+            return `selected-${f.toLowerCase()[0]}`;
         }
         return '';
     }
 
-    onCommandChanged = e => {
+    onCommandChanged = (e) => {
         const { target: { value } } = e;
         this.setState({
-            command: value
-        })
-
-
+            command: value,
+        });
     }
 
-    onCommandKeyPressed = e => {
+    onCommandKeyPressed = (e) => {
         if (e.key === 'Enter') {
             this.onExecuteCommand();
         }
     }
-    onExecuteCommand = e => {
+    onExecuteCommand = (e) => {
         const { command } = this.state;
         if (!command) {
             return;
         }
-        const parsedCommand = parseCommand(command)
+        const parsedCommand = parseCommand(command);
         if (parsedCommand) {
-            const { command, args } = parsedCommand;
-            this.executeCommand(command, args);
+            const { cmd, args } = parsedCommand;
+            this.executeCommand(cmd, args);
         } else {
             this.addReport(`invalid command: ${command}`);
         }
         this.setState({
             command: '',
-        })
+        });
     }
 
     render() {
-        const { command, reports , f} = this.state;
+        const { command, reports, f } = this.state;
         console.log(`---------  facing ${f}`);
         return <div className="container">
             <div className="title">
@@ -200,7 +196,7 @@ class HomePage extends Component {
                     Array.from({ length: 5 }).map((e, rowIndex) => (
                         < div className="row" key={`row_${rowIndex}`}>
                             {
-                                Array.from({ length: 5 }).map((e, columnIndex) => (
+                                Array.from({ length: 5 }).map((_, columnIndex) => (
                                     <div key={`${4 - rowIndex}_${columnIndex}`} className={this.getCellClassName(columnIndex, 4 - rowIndex)}
                                         data-x={columnIndex}
                                         data-y={4 - rowIndex}
@@ -217,7 +213,7 @@ class HomePage extends Component {
                     ))
                 }
             </div>
-        </div >
+        </div >;
     }
 }
 export default HomePage;

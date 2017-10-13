@@ -1,22 +1,22 @@
-var path = require('path');
-var webpack = require('webpack');
-const autoprefixer = require('autoprefixer')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var config = {
+const config = {
   devtool: 'source-map',
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   entry: './src/index.js',
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css'),
   ],
   module: {
     rules: [ // "style-loader!css-loader!less-loader" can only be used with module.loaders;
@@ -33,23 +33,23 @@ var config = {
             {
               loader: 'postcss-loader',
               options: {
-                plugins:[
+                plugins: [
                   autoprefixer({
-                    browsers: ['last 2 versions']
-                  })
-                ]
-              }
+                    browsers: ['last 2 versions'],
+                  }),
+                ],
+              },
             },
-            "less-loader"]
-        })
+            "less-loader"],
+        }),
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$/i,
-        use: 'file-loader'
+        use: 'file-loader',
       },
-    ]
+    ],
   },
 };
 
 
-module.exports = config
+module.exports = config;
