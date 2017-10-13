@@ -13,7 +13,8 @@ class HomePage extends Component {
             reports: [],
         };
     }
-    // #region document.addEventListener
+
+    // #region hookup window.keydown event
     componentWillMount() {
         document.addEventListener("keydown", this.handleNavigation);
     }
@@ -25,7 +26,39 @@ class HomePage extends Component {
     }
     // #endregion
 
-    // #region command handling
+    // user presses left/up/right/down key
+    handleNavigation = (e) => {
+        const found = Commands.key2CommandMap.find(m => m.key === e.key);
+        if (found) {
+            Commands.executeCommand(this.state, found.command, this.onCommandExecuted);
+        }
+    }
+
+    // user presses Enter on command input
+    handleEnterKey = (e) => {
+        if (e.key === 'Enter') {
+            this.handleGoButtonClick();
+        }
+    }
+
+    // user clicks the 'Go' button
+    handleGoButtonClick = () => {
+        const { command } = this.state;
+        if (command) {
+            Commands.executeCommand(this.state, command, this.onCommandExecuted);
+            this.setState({
+                command: '',
+            });
+        }
+    }
+
+    /**
+     * command callback. the Command Execute Engine will call this function with updated state after
+     * it executed a valid move or change direction command
+     * and an alert message after 
+     *      1.it encoutered invalid command,  Or 
+     *      2.executed 'REPORT' command
+     */
     onCommandExecuted = (newState, alert) => {
         if (alert) { // we either encounterred an error, or this is a 'REPORT' command;
             const { reports } = this.state;
@@ -38,31 +71,7 @@ class HomePage extends Component {
         }
     }
 
-    handleNavigation = (e) => {
-        const found = Commands.key2CommandMap.find(m => m.key === e.key);
-        if (found) {
-            Commands.executeCommand(this.state, found.command, this.onCommandExecuted);
-        }
-    }
-
-    handleEnterKey = (e) => {
-        if (e.key === 'Enter') {
-            this.handleGoButtonClick();
-        }
-    }
-
-    handleGoButtonClick = () => {
-        const { command } = this.state;
-        if (command) {
-            Commands.executeCommand(this.state, command, this.onCommandExecuted);
-            this.setState({
-                command: '',
-            });
-        }
-    }
-    // #endregion
-
-
+    // user clicks a div with coordinate x, y
     onCellClicked = (x, y) => () => {
         this.setState({
             x,
@@ -70,6 +79,7 @@ class HomePage extends Component {
         });
     }
 
+    // get the css class name for a cell by its coorinate
     getCellClassName = (x, y) => {
         const { x: selectedX, y: selectedY, f } = this.state;
         if (x === selectedX && y === selectedY) {
@@ -78,6 +88,7 @@ class HomePage extends Component {
         return '';
     }
 
+    // user updates command
     onCommandValueChanged = (e) => {
         const { target: { value } } = e;
         this.setState({
