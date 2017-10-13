@@ -1,20 +1,7 @@
 import React, { Component } from 'react';
-import { parseCommand } from '../common/commands';
+import * as Commands from '../common/commands';
 
-const directions = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
-const keyMap = [{
-    key: 'ArrowLeft',
-    command: 'LEFT',
-}, {
-    key: 'ArrowUp',
-    command: 'MOVE',
-}, {
-    key: 'ArrowRight',
-    command: 'RIGHT',
-}, {
-    key: 'ArrowDown',
-    command: 'REPORT',
-}];
+
 class HomePage extends Component {
     constructor() {
         super();
@@ -26,117 +13,57 @@ class HomePage extends Component {
             reports: [],
         };
     }
-
+    // #region document.addEventListener
     componentWillMount() {
-        document.addEventListener("keydown", this.handleKeyDown);
+        document.addEventListener("keydown", this.handleNavigation);
     }
 
     componentWillUnmount() {
-        // NOTE:When the page refreshes react doesn't have the chance to unmount the components as normal. 
+        // NOTE:When the page refreshes react doesn't have the chance to unmount the components as normal.
         // Use the window.onbeforeunload event to set a handler for refresh
-        document.removeEventListener("keydown", this.handleKeyDown);
+        document.removeEventListener("keydown", this.handleNavigation);
     }
+    // #endregion
 
-    addReport = (newReport) => {
-        const { reports } = this.state;
-        const newReports = [...reports].concat([newReport]).slice(-5); // we keep 5 maximum logs;
-        const self = this;
-        setTimeout(() => {
-            self.setState({
+    // #region command handling
+    onCommandExecuted = (newState, alert) => {
+        if (alert) { // we either encounterred an error, or this is a 'REPORT' command;
+            const { reports } = this.state;
+            const newReports = [...reports].concat([alert]).slice(-5); // we keep 5 maximum logs;
+            this.setState({
                 reports: newReports,
             });
-        }, 500);
-    }
-
-    executeCommand = (_command, args) => {
-        // place 0, 0, north
-        console.log(`---------  executing command ${_command} with args ${args}`);
-        const command = _command.toUpperCase();
-        const { x, y, f: facing } = this.state;
-        const directionIndex = directions.indexOf(facing);
-        switch (command) {
-            case 'PLACE': {
-                const [x, y, f] = args;
-                if (x > 4 || y > 4) {
-                    this.addReport('cannot go outside the pen');
-                    return;
-                }
-                console.log(`---------  set facing => ${f.toUpperCase()}`);
-                this.setState({
-                    x: Number(x),
-                    y: Number(y),
-                    f: f.toUpperCase(),
-                }, () => {
-                    console.log(` ==========  ${this.state.f}`);
-                });
-                break;
-            }
-            case 'LEFT':
-                this.setState({
-                    f: directions[(directionIndex + 3) % 4],
-                });
-                break;
-            case 'MOVE':
-                switch (directionIndex) {
-                    case 0: // north
-                        if (y === 4) {
-                            this.addReport('cannot go north');
-                            return false;
-                        }
-                        this.setState({
-                            y: y + 1,
-                        });
-                        break;
-                    case 1: // east
-                        if (x === 4) {
-                            this.addReport('cannot go east');
-                            return false;
-                        }
-                        this.setState({
-                            x: x + 1,
-                        });
-                        break;
-                    case 2: // south
-                        if (y === 0) {
-                            this.addReport('cannot go south');
-                            return false;
-                        }
-                        this.setState({
-                            y: y - 1,
-                        });
-                        break;
-                    case 3: // west
-                        if (x === 0) {
-                            this.addReport('cannot go west');
-                            return false;
-                        }
-                        this.setState({
-                            x: x - 1,
-                        });
-                        break;
-                }
-                break;
-            case 'RIGHT':
-                this.setState({
-                    f: directions[(directionIndex + 1) % 4],
-                });
-                break;
-            case 'REPORT':
-                this.addReport(`${x},${y},${facing}`);
-                break;
-            default:
-                break;
+        } else { // turtle moves to a new location or change its direction
+            this.setState(newState); // make sure newState doesn't shallowEqual to this.state!
         }
     }
 
-    handleKeyDown = (e) => {
-        const result = keyMap.find(m => m.key === e.key);
-        if (result) {
-            this.executeCommand(result.command);
+    handleNavigation = (e) => {
+        const found = Commands.key2CommandMap.find(m => m.key === e.key);
+        if (found) {
+            Commands.executeCommand(this.state, found.command, this.onCommandExecuted);
         }
     }
 
-    onCellClicked = (x, y) => (e) => {
+    handleEnterKey = (e) => {
+        if (e.key === 'Enter') {
+            this.handleGoButtonClick();
+        }
+    }
+
+    handleGoButtonClick = () => {
+        const { command } = this.state;
+        if (command) {
+            Commands.executeCommand(this.state, command, this.onCommandExecuted);
+            this.setState({
+                command: '',
+            });
+        }
+    }
+    // #endregion
+
+
+    onCellClicked = (x, y) => () => {
         this.setState({
             x,
             y,
@@ -151,45 +78,22 @@ class HomePage extends Component {
         return '';
     }
 
-    onCommandChanged = (e) => {
+    onCommandValueChanged = (e) => {
         const { target: { value } } = e;
         this.setState({
             command: value,
         });
     }
 
-    onCommandKeyPressed = (e) => {
-        if (e.key === 'Enter') {
-            this.onExecuteCommand();
-        }
-    }
-    onExecuteCommand = (e) => {
-        const { command } = this.state;
-        if (!command) {
-            return;
-        }
-        const parsedCommand = parseCommand(command);
-        if (parsedCommand) {
-            const { cmd, args } = parsedCommand;
-            this.executeCommand(cmd, args);
-        } else {
-            this.addReport(`invalid command: ${command}`);
-        }
-        this.setState({
-            command: '',
-        });
-    }
-
     render() {
-        const { command, reports, f } = this.state;
-        console.log(`---------  facing ${f}`);
+        const { command, reports } = this.state;
         return <div className="container">
             <div className="title">
                 <h1>Turtle in the Pond</h1>
             </div>
             <div className="command">
-                <input type="text" value={command} onChange={this.onCommandChanged} onKeyPress={this.onCommandKeyPressed} />
-                <button onClick={this.onExecuteCommand}>Go</button>
+                <input type="text" value={command} onChange={this.onCommandValueChanged} onKeyPress={this.handleEnterKey} />
+                <button onClick={this.handleGoButtonClick}>Go</button>
             </div>
             <div className="canvas" >
                 {
