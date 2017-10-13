@@ -98,15 +98,18 @@ class HomePage extends Component {
 
     render() {
         const { command, reports } = this.state;
-        return <div className="container">
-            <div className="title">
-                <h1>Turtle in the Pond</h1>
+        return <div className="main">
+            <div className="header">
+                <div className="title">
+                    <h1>Turtle in the Pond</h1>
+                </div>
+                <div className="command">
+                    <input type="text" value={command} onChange={this.onCommandValueChanged} onKeyPress={this.handleEnterKey} />
+                    <button onClick={this.handleGoButtonClick}>Go</button>
+                </div>
             </div>
-            <div className="command">
-                <input type="text" value={command} onChange={this.onCommandValueChanged} onKeyPress={this.handleEnterKey} />
-                <button onClick={this.handleGoButtonClick}>Go</button>
-            </div>
-            <div className="canvas" >
+
+            <div className="content" >
                 {
                     Array.from({ length: 5 }).map((e, rowIndex) => (
                         < div className="row" key={`row_${rowIndex}`}>
@@ -120,13 +123,13 @@ class HomePage extends Component {
                         </div>
                     ))
                 }
-            </div>
-            <div className="log">
-                {
-                    reports.map((r, index) => (
-                        <div key={`key_${index}`}>{r}</div>
-                    ))
-                }
+                <div className="log">
+                    {
+                        reports.map((r, index) => (
+                            <div key={`key_${index}`}>{r}</div>
+                        ))
+                    }
+                </div>
             </div>
         </div >;
     }

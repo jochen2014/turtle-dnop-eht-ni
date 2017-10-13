@@ -102,4 +102,14 @@ describe('test Command Engine', () => {
         expect(cb.mock.calls[0][0]).toBe(currentState2);
         expect(cb.mock.calls[0][1]).toBe('cannot go north');
     });
+    it('should show Report correctly', () => {
+        const currentState = { x: 1, y: 2, f: 'NORTH' };
+        const command = 'REPORT';
+        const cb = jest.fn();
+        executeCommand(currentState, command, cb);
+        expect(cb.mock.calls.length).toBe(1);
+        expect(cb.mock.calls[0][0]).toBe(currentState);
+        expect(cb.mock.calls[0][1]).toBe('1, 2, NORTH');
+        cb.mockReset();
+    });
 });
