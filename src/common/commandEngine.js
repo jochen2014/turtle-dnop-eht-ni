@@ -17,7 +17,7 @@ const parseCommand = (command) => {
     let parsedResult;
     commands.some((c) => {
         if (typeof c === 'object') { // regex;
-            const match = command.match(c);
+            const match = command.toUpperCase().match(c);
             if (match) {
                 parsedResult = {
                     command: 'PLACE',
@@ -45,7 +45,7 @@ const executeCommand = (currentState, commandRaw, callback) => {
         case 'PLACE': {
             const [argX, argY, argF] = args;
             if (argX > 4 || argY > 4) {
-                this.addReport('cannot go outside the pen');
+                callback(currentState, 'cannot go outside the pen');
                 return;
             }
             callback({
@@ -123,5 +123,6 @@ const executeCommand = (currentState, commandRaw, callback) => {
 
 export {
     key2CommandMap,
+    parseCommand,
     executeCommand,
 };

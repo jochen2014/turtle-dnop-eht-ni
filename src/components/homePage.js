@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as Commands from '../common/commands';
+import * as CommandEngine from '../common/commandEngine';
 
 
 class HomePage extends Component {
@@ -28,9 +28,9 @@ class HomePage extends Component {
 
     // user presses left/up/right/down key
     handleNavigation = (e) => {
-        const found = Commands.key2CommandMap.find(m => m.key === e.key);
+        const found = CommandEngine.key2CommandMap.find(m => m.key === e.key);
         if (found) {
-            Commands.executeCommand(this.state, found.command, this.onCommandExecuted);
+            CommandEngine.executeCommand(this.state, found.command, this.onCommandExecuted);
         }
     }
 
@@ -45,7 +45,7 @@ class HomePage extends Component {
     handleGoButtonClick = () => {
         const { command } = this.state;
         if (command) {
-            Commands.executeCommand(this.state, command, this.onCommandExecuted);
+            CommandEngine.executeCommand(this.state, command, this.onCommandExecuted);
             this.setState({
                 command: '',
             });
