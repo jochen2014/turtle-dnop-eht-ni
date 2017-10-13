@@ -9,7 +9,7 @@
     "build": "webpack --color --progress --bail",
     "clean": "rimraf dist",
     "lint": "eslint --color --fix .",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "react": "^16.0.0",
