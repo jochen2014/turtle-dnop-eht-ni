@@ -1,20 +1,20 @@
-var path = require('path');
-var webpack = require('webpack');
-const autoprefixer = require('autoprefixer')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+let path = require('path');
+let webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-var config = {
+let config = {
   entry: './src/index.js',
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   plugins: [
     new UglifyJSPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css'),
   ],
   module: {
     rules: [ // "style-loader!css-loader!less-loader" can only be used with module.loaders;
@@ -31,23 +31,23 @@ var config = {
             {
               loader: 'postcss-loader',
               options: {
-                plugins:[
+                plugins: [
                   autoprefixer({
-                    browsers: ['last 2 versions']
-                  })
-                ]
-              }
+                    browsers: ['last 2 versions'],
+                  }),
+                ],
+              },
             },
-            "less-loader"]
-        })
+            "less-loader"],
+        }),
       },
       {
         test: /\.jpe?g$|\.gif$|\.png$/i,
-        use: 'file-loader'
+        use: 'file-loader',
       },
-    ]
+    ],
   },
 };
 
 
-module.exports = config
+module.exports = config;

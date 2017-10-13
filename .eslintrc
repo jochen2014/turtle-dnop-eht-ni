@@ -4,17 +4,25 @@
     "es6": true,
     "jest/globals": true
   },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
+  },
   "extends": [
     "eslint:recommended",
+    "plugin:react/recommended",
     "airbnb-base"
   ],
   "plugins": [
+    "react",
     "jest"
   ],
   "rules": {
     "quotes": "off",
     "no-console": "off",
     "no-debugger": "off",
-    "indent": ["off",4 ]
+    "indent": ["off", 4]
   }
 }

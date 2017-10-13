@@ -1,12 +1,14 @@
 {
-  "name": "game",
+  "name": "turtle-in-the-pond",
   "version": "1.0.0",
   "description": "",
+  "author": "bochen2014@yahoo.com",
   "main": "index.js",
   "scripts": {
     "start": "node heroku.js",
     "build": "webpack --color --progress --bail",
     "clean": "rimraf dist",
+    "lint": "eslint --color --fix .",
     "test": "jest"
   },
   "dependencies": {
@@ -16,6 +18,7 @@
     "autoprefixer": "^7.1.4",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
+    "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -27,6 +30,8 @@
     "eslint": "^4.1.1",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-jest": "^21.2.0",
+    "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.5",
     "jest": "^21.1.0",
@@ -39,6 +44,7 @@
     "react-test-renderer": "^16.0.0",
     "rimraf": "^2.6.1",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.3",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1",
     "whatwg-fetch": "^2.0.3"
